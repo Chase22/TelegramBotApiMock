@@ -3,8 +3,5 @@
  */
 package io.github.Chase22.telegram.telegrambotapimock;
 
-public class Library {
-    public boolean someLibraryMethod() {
-        return true;
-    }
+public class TelegramBotApiMock {
 }
