@@ -3,5 +3,14 @@
  */
 package io.github.Chase22.telegram.telegrambotapimock;
 
+import io.github.Chase22.telegram.telegrambotapimock.infrastructure.server.ApiServer;
+
 public class TelegramBotApiMock {
+    public void start(int port) {
+        try {
+            new ApiServer(port).start();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 }
