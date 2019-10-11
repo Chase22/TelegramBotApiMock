@@ -15,7 +15,6 @@ public class ApiServer {
         connector.setPort(port);
         server.setConnectors(new Connector[]{connector});
         ServletHandler servletHandler = new ServletHandler();
-
         servletHandler.addServletWithMapping(HealthEndpoint.class, "/health");
     }
 
