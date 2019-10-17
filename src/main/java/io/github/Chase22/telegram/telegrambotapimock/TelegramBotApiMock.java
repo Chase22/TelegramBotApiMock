@@ -3,14 +3,33 @@
  */
 package io.github.Chase22.telegram.telegrambotapimock;
 
+import io.github.Chase22.telegram.telegrambotapimock.config.TelegramBotApiConfiguration;
 import io.github.Chase22.telegram.telegrambotapimock.infrastructure.server.ApiServer;
+import io.github.Chase22.telegram.telegrambotapimock.infrastructure.server.DependencyRegistry;
+
+import java.util.Objects;
 
 public class TelegramBotApiMock {
+    private ApiServer apiServer;
+    public static TelegramBotApiConfiguration configuration;
+
+    public TelegramBotApiMock(final TelegramBotApiConfiguration configuration) {
+        TelegramBotApiMock.configuration = configuration;
+    }
+
     public void start(int port) {
         try {
-            new ApiServer(port).start();
+            final DependencyRegistry registry = new DependencyRegistry(port, configuration);
+            apiServer = registry.getApiServer();
+            apiServer.start();
         } catch (Exception e) {
             e.printStackTrace();
+        }
+    }
+
+    public void stop() throws Exception {
+        if (Objects.nonNull(apiServer) && apiServer.isRunning()) {
+            apiServer.stop();
         }
     }
 }

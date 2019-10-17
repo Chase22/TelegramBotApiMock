@@ -1,4 +1,4 @@
-package io.github.Chase22.telegram.telegrambotapimock.infrastructure.server;
+package io.github.Chase22.telegram.telegrambotapimock.infrastructure.server.endpoint;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
