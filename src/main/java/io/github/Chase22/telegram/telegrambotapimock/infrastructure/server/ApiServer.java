@@ -1,21 +1,18 @@
 package io.github.Chase22.telegram.telegrambotapimock.infrastructure.server;
 
 import io.github.Chase22.telegram.telegrambotapimock.infrastructure.server.endpoint.EndpointRegistry;
-import org.eclipse.jetty.server.Connector;
-import org.eclipse.jetty.server.Server;
-import org.eclipse.jetty.server.ServerConnector;
+import io.undertow.Undertow;
+import io.undertow.server.handlers.BlockingHandler;
 
 public class ApiServer {
 
-    private final Server server;
+    private final Undertow server;
+    private final Router router;
 
     ApiServer(int port, EndpointRegistry endpointRegistry) {
-        server = new Server();
-        ServerConnector connector = new ServerConnector(server);
-        connector.setPort(port);
-        server.setConnectors(new Connector[]{connector});
+        router = new Router(endpointRegistry);
 
-        server.setHandler(endpointRegistry.getServletHandler());
+        server = Undertow.builder().addHttpListener(port, "localhost").setHandler(new BlockingHandler(router)).build();
     }
 
     public void start() throws Exception {
@@ -24,9 +21,5 @@ public class ApiServer {
 
     public void stop() throws Exception {
         server.stop();
-    }
-
-    public boolean isRunning() {
-        return server.isRunning();
     }
 }

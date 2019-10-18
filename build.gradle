@@ -12,8 +12,7 @@ group = 'io.github.Chase22.telegram'
 version = '1.0.0-SNAPSHOT'
 
 dependencies {
-    implementation group: 'org.eclipse.jetty', name: 'jetty-server', version: '9.4.21.v20190926'
-    implementation group: 'org.eclipse.jetty', name: 'jetty-servlet', version: '9.4.21.v20190926'
+    implementation group: 'io.undertow', name: 'undertow-core', version: '2.0.27.Final'
     implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.28'
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.10.0'
 

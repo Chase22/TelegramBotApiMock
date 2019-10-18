@@ -28,7 +28,7 @@ public class TelegramBotApiMock {
     }
 
     public void stop() throws Exception {
-        if (Objects.nonNull(apiServer) && apiServer.isRunning()) {
+        if (Objects.nonNull(apiServer)) {
             apiServer.stop();
         }
     }

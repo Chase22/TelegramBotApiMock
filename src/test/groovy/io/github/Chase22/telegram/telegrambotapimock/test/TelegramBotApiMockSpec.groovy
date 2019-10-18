@@ -6,15 +6,16 @@ package io.github.Chase22.telegram.telegrambotapimock.test
 
 import io.github.Chase22.telegram.telegrambotapimock.TelegramBotApiMock
 import io.github.Chase22.telegram.telegrambotapimock.util.ApiMockBuilder
+import io.undertow.util.StatusCodes
 import spock.lang.Specification
 import spock.lang.Subject
 
 import java.net.http.HttpClient
 import java.net.http.HttpRequest
 
+import static io.undertow.util.StatusCodes.OK
 import static java.net.http.HttpRequest.BodyPublishers.noBody
 import static java.net.http.HttpResponse.BodyHandlers.ofString
-import static org.eclipse.jetty.http.HttpStatus.OK_200
 
 class TelegramBotApiMockSpec extends Specification {
 
@@ -37,6 +38,6 @@ class TelegramBotApiMockSpec extends Specification {
                 .build()
 
         expect:
-        client.send(request, ofString()).statusCode() == OK_200
+        client.send(request, ofString()).statusCode() == OK
     }
 }

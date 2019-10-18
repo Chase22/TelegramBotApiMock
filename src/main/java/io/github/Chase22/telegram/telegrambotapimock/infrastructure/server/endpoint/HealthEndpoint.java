@@ -1,15 +1,17 @@
 package io.github.Chase22.telegram.telegrambotapimock.infrastructure.server.endpoint;
 
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import io.undertow.server.HttpServerExchange;
+import io.undertow.util.StatusCodes;
 
-public class HealthEndpoint extends HttpServlet {
+public class HealthEndpoint implements Endpoint {
 
     @Override
-    protected void doGet(final HttpServletRequest req, final HttpServletResponse resp) throws ServletException, IOException {
-        resp.setStatus(HttpServletResponse.SC_OK);
+    public String getPath() {
+        return "/health";
+    }
+
+    @Override
+    public void process(final HttpServerExchange exchange) {
+        exchange.setStatusCode(StatusCodes.OK);
     }
 }

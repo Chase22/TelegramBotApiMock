@@ -3,6 +3,7 @@ package io.github.Chase22.telegram.telegrambotapimock.test
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.github.Chase22.telegram.telegrambotapimock.TelegramBotApiMock
 import io.github.Chase22.telegram.telegrambotapimock.util.ApiMockBuilder
+import io.undertow.util.StatusCodes
 import spock.lang.Specification
 import spock.lang.Subject
 
@@ -11,10 +12,8 @@ import java.net.http.HttpRequest
 import java.net.http.HttpResponse
 
 import static io.github.Chase22.telegram.telegrambotapimock.data.UserFixture.BOT_USER
-import static java.net.http.HttpRequest.BodyPublishers.noBody
+import static io.undertow.util.Headers.CONTENT_TYPE_STRING
 import static java.net.http.HttpResponse.BodyHandlers.ofString
-import static org.eclipse.jetty.http.HttpHeader.CONTENT_TYPE
-import static org.eclipse.jetty.http.HttpStatus.OK_200
 
 class GetMeApiSpec extends Specification {
 
@@ -32,16 +31,16 @@ class GetMeApiSpec extends Specification {
     def "GetMe should return the bot"() {
         given:
         def request = HttpRequest.newBuilder()
-                .method("GET", noBody())
-                .header(CONTENT_TYPE as String, "application/json")
-                .uri(URI.create("http://localhost:${port}/getMe"))
+                .method("GET", HttpRequest.BodyPublishers.ofString("SomeBody"))
+                .header(CONTENT_TYPE_STRING, "application/json")
+                .uri(URI.create("http://localhost:${port}/token/getMe"))
                 .build()
 
         when:
         HttpResponse<String> response = client.send(request, ofString())
 
         then:
-        response.statusCode() == OK_200
+        response.statusCode() == StatusCodes.OK
         Map body = new ObjectMapper().readValue(response.body(), Map)
 
         body.id == BOT_USER.id
