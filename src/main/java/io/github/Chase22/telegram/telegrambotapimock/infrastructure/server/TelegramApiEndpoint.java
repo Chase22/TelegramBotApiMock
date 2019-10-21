@@ -1,32 +1,31 @@
 package io.github.Chase22.telegram.telegrambotapimock.infrastructure.server;
 
-import io.github.Chase22.telegram.telegrambotapimock.infrastructure.server.endpoint.Endpoint;
-import io.github.Chase22.telegram.telegrambotapimock.infrastructure.server.mapper.ContentTypeMapper;
-import io.github.Chase22.telegram.telegrambotapimock.infrastructure.server.mapper.ContentTypeMapperContext;
 import io.github.Chase22.telegram.telegrambotapimock.infrastructure.server.mapper.NoContentTypeMapperException;
+import io.undertow.server.HttpHandler;
 import io.undertow.server.HttpServerExchange;
+import io.undertow.util.AttachmentKey;
 import io.undertow.util.Headers;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.IOException;
-
 import static io.undertow.util.StatusCodes.BAD_REQUEST;
 import static io.undertow.util.StatusCodes.INTERNAL_SERVER_ERROR;
 import static java.util.Objects.isNull;
-import static java.util.Objects.nonNull;
 
-public abstract class TelegramApiEndpoint<T> implements Endpoint {
+public abstract class TelegramApiEndpoint<T> implements HttpHandler {
     private static final Logger LOGGER = LoggerFactory.getLogger(TelegramApiEndpoint.class);
 
-    protected abstract void process(T body, HttpServerExchange response);
+    public abstract Class<T> getBodyType();
+    public abstract String getPath();
 
-    protected abstract Class<T> getBodyType();
+    protected abstract void process(HttpServerExchange response);
+
+    public AttachmentKey<T> getAttachmentKey() {
+        return AttachmentKey.create(getBodyType());
+    }
 
     @Override
-    public void process(final HttpServerExchange exchange) {
-        ContentTypeMapperContext mapperContext = ContentTypeMapperContext.getInstance();
-
+    public void handleRequest(final HttpServerExchange exchange) {
         final String contentTypeHeader = exchange.getRequestHeaders().getFirst(Headers.CONTENT_TYPE);
         if (isNull(contentTypeHeader)) {
             exchange.setStatusCode(BAD_REQUEST);
@@ -34,16 +33,7 @@ public abstract class TelegramApiEndpoint<T> implements Endpoint {
         }
 
         try {
-            T body = null;
-            if (nonNull(getBodyType())) {
-                final ContentTypeMapper contentMapper = mapperContext.getMapperForType(contentTypeHeader);
-                body = contentMapper.mapToObject(exchange, getBodyType());
-            }
-
-            process(body, exchange);
-        } catch (IOException e) {
-            LOGGER.error("Error processing request", e);
-            exchange.setStatusCode(INTERNAL_SERVER_ERROR);
+            process(exchange);
         } catch (NoContentTypeMapperException e) {
             LOGGER.error("No Content Type mapper for type " + contentTypeHeader, e);
             exchange.setStatusCode(INTERNAL_SERVER_ERROR);

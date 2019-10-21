@@ -13,6 +13,7 @@ import java.net.http.HttpResponse
 
 import static io.github.Chase22.telegram.telegrambotapimock.data.UserFixture.BOT_USER
 import static io.undertow.util.Headers.CONTENT_TYPE_STRING
+import static java.net.http.HttpRequest.BodyPublishers.noBody
 import static java.net.http.HttpResponse.BodyHandlers.ofString
 
 class GetMeApiSpec extends Specification {
@@ -31,7 +32,7 @@ class GetMeApiSpec extends Specification {
     def "GetMe should return the bot"() {
         given:
         def request = HttpRequest.newBuilder()
-                .method("GET", HttpRequest.BodyPublishers.ofString("SomeBody"))
+                .method("GET", noBody())
                 .header(CONTENT_TYPE_STRING, "application/json")
                 .uri(URI.create("http://localhost:${port}/token/getMe"))
                 .build()

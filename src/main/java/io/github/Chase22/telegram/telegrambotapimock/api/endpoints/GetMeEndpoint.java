@@ -9,7 +9,7 @@ import java.io.IOException;
 
 public class GetMeEndpoint extends TelegramApiEndpoint<Void> {
     @Override
-    protected Class<Void> getBodyType() {
+    public Class<Void> getBodyType() {
         return null;
     }
 
@@ -19,7 +19,7 @@ public class GetMeEndpoint extends TelegramApiEndpoint<Void> {
     }
 
     @Override
-    protected void process(final Void body, final HttpServerExchange exchange) {
+    protected void process(final HttpServerExchange exchange) {
         try {
             new ObjectMapper().writeValue(exchange.getOutputStream(), TelegramBotApiMock.configuration.getBot());
         } catch (IOException e) {

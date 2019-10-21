@@ -1,0 +1,24 @@
+package io.github.Chase22.telegram.telegrambotapimock.infrastructure.server.handler;
+
+import io.github.Chase22.telegram.telegrambotapimock.infrastructure.server.TelegramApiEndpoint;
+import io.github.Chase22.telegram.telegrambotapimock.infrastructure.server.mapper.JsonTypeMapper;
+import io.undertow.server.HttpHandler;
+import io.undertow.server.HttpServerExchange;
+
+import static io.github.Chase22.telegram.telegrambotapimock.infrastructure.server.Router.ENDPOINT_ATTACHMENT_KEY;
+import static java.util.Objects.nonNull;
+
+public class ParameterHandler implements HttpHandler {
+
+    @Override
+    public void handleRequest(final HttpServerExchange exchange) throws Exception {
+        final TelegramApiEndpoint endpoint = exchange.getAttachment(ENDPOINT_ATTACHMENT_KEY);
+
+        if (nonNull(endpoint.getBodyType())) {
+            Object parameter = new JsonTypeMapper().mapToObject(exchange, endpoint.getBodyType());
+            exchange.putAttachment(endpoint.getAttachmentKey(), parameter);
+        }
+
+        endpoint.handleRequest(exchange);
+    }
+}

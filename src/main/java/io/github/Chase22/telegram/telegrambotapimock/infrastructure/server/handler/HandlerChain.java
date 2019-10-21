@@ -11,7 +11,10 @@ public class HandlerChain {
     private final HttpHandler handler;
 
     public HandlerChain(final EndpointRegistry endpointRegistry, final TelegramBotApiConfiguration config) {
-        Router router = new Router(endpointRegistry);
+
+        ParameterHandler parameterHandler = new ParameterHandler();
+
+        Router router = new Router(parameterHandler, endpointRegistry);
         BlockingHandler blockingHandler = new BlockingHandler(router);
 
         TokenHandler tokenHandler = new TokenHandler(config.getBotToken(), blockingHandler);
