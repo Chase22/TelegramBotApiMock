@@ -1,4 +1,4 @@
-name: telegamApiMockCI
+name: TelegramBotApiMock
 
 on: [push]
 
