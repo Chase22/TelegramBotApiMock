@@ -8,9 +8,10 @@ class ApiMockBuilder {
 
     static TelegramBotApiMock getDefault() {
         return new TelegramBotApiMock(
-                new TelegramBotApiConfiguration()
-                        .bot(UserFixture.BOT_USER)
-                        .botToken("token")
+                new TelegramBotApiConfiguration(
+                        UserFixture.BOT_USER,
+                        "token"
+                )
         )
     }
 }
