@@ -20,7 +20,7 @@ public class TelegramBotApiMock {
     public void start(int port) {
         try {
             final DependencyRegistry registry = new DependencyRegistry(port, configuration);
-            apiServer = registry.getApiServer();
+            apiServer = registry.apiServer;
             apiServer.start();
         } catch (Exception e) {
             e.printStackTrace();

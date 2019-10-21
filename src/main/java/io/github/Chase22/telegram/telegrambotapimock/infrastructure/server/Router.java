@@ -12,6 +12,7 @@ import static java.util.Objects.nonNull;
 
 public class Router implements HttpHandler {
     public static final AttachmentKey<TelegramApiEndpoint> ENDPOINT_ATTACHMENT_KEY = AttachmentKey.create(TelegramApiEndpoint.class);
+    public static final AttachmentKey<String> BOT_ID_ATTACHMENT_KEY = AttachmentKey.create(String.class);
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Router.class);
     private final EndpointRegistry endpointRegistry;
@@ -27,6 +28,8 @@ public class Router implements HttpHandler {
         String[] requestSplit = exchange.getRequestPath().substring(1).split("/", 2);
         String botId = requestSplit[0];
         String path = "/" + requestSplit[1];
+
+        exchange.putAttachment(BOT_ID_ATTACHMENT_KEY, botId);
 
         TelegramApiEndpoint endpoint = endpointRegistry.getForPath(path);
 

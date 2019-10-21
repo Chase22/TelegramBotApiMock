@@ -1,5 +1,6 @@
 package io.github.Chase22.telegram.telegrambotapimock.infrastructure.server.handler;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.Chase22.telegram.telegrambotapimock.config.TelegramBotApiConfiguration;
 import io.github.Chase22.telegram.telegrambotapimock.infrastructure.server.Router;
 import io.github.Chase22.telegram.telegrambotapimock.infrastructure.server.endpoint.EndpointRegistry;
@@ -10,9 +11,12 @@ import io.undertow.server.handlers.PathTemplateHandler;
 public class HandlerChain {
     private final HttpHandler handler;
 
-    public HandlerChain(final EndpointRegistry endpointRegistry, final TelegramBotApiConfiguration config) {
+    public HandlerChain(final EndpointRegistry endpointRegistry,
+                        final TelegramBotApiConfiguration config,
+                        final ObjectMapper objectMapper
+    ) {
 
-        ParameterHandler parameterHandler = new ParameterHandler();
+        ParameterHandler parameterHandler = new ParameterHandler(objectMapper);
 
         Router router = new Router(parameterHandler, endpointRegistry);
         BlockingHandler blockingHandler = new BlockingHandler(router);
