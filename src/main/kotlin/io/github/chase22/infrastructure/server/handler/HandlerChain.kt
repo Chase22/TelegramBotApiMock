@@ -12,7 +12,7 @@ class HandlerChain(endpointRegistry: EndpointRegistry,
                    config: TelegramBotApiConfiguration,
                    objectMapper: ObjectMapper
 ) {
-    private val handler: HttpHandler
+    val handler: HttpHandler
 
     init {
         val parameterHandler = ParameterHandler(objectMapper)
