@@ -18,7 +18,6 @@ import static java.net.http.HttpResponse.BodyHandlers.ofString
 
 class GetMeApiSpec extends Specification {
 
-    final static int port = 50300
     final static client = HttpClient.newBuilder().build()
 
     @Subject
@@ -26,7 +25,7 @@ class GetMeApiSpec extends Specification {
 
     def setup() {
         apiMock.stop()
-        apiMock.start(port)
+        apiMock.start()
     }
 
     def "GetMe should return the bot"() {
@@ -34,7 +33,7 @@ class GetMeApiSpec extends Specification {
         def request = HttpRequest.newBuilder()
                 .method("GET", noBody())
                 .header(CONTENT_TYPE_STRING, "application/json")
-                .uri(URI.create("http://localhost:${port}/token/getMe"))
+                .uri(URI.create("http://localhost:${ApiMockBuilder.port}/token/getMe"))
                 .build()
 
         when:

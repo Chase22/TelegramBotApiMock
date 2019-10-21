@@ -1,5 +1,6 @@
 package io.github.chase22.infrastructure.server
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import io.undertow.server.HttpHandler
 import io.undertow.server.HttpServerExchange
 import io.undertow.util.AttachmentKey
@@ -27,5 +28,17 @@ abstract class TelegramApiEndpoint<T> : HttpHandler {
         }
 
         process(exchange)
+    }
+
+    fun setParamAttachment(exchange: HttpServerExchange, objectMapper: ObjectMapper) {
+        bodyType?.let {
+            objectMapper.readValue<T>(exchange.inputStream, bodyType).let {
+                exchange.putAttachment<T>(attachmentKey, it)
+            }
+        }
+    }
+
+    fun getParamAttachment(exchange: HttpServerExchange): T {
+        return exchange.getAttachment(attachmentKey)
     }
 }

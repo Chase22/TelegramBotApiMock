@@ -5,13 +5,14 @@ import io.github.chase22.config.TelegramBotApiConfiguration
 import io.github.chase22.data.UserFixture
 
 class ApiMockBuilder {
+    final static int port = 50300
 
     static TelegramBotApiMock getDefault() {
-        return new TelegramBotApiMock(
-                new TelegramBotApiConfiguration(
-                        UserFixture.BOT_USER,
-                        "token"
-                )
+        def configuration = new TelegramBotApiConfiguration(
+                UserFixture.BOT_USER,
+                "token"
         )
+
+        return new TelegramBotApiMock(configuration, port)
     }
 }

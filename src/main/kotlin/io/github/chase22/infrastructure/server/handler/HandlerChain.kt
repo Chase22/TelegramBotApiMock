@@ -2,7 +2,6 @@ package io.github.chase22.infrastructure.server.handler
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.github.chase22.config.TelegramBotApiConfiguration
-import io.github.chase22.infrastructure.server.Router
 import io.github.chase22.infrastructure.server.endpoint.EndpointRegistry
 import io.undertow.server.HttpHandler
 import io.undertow.server.handlers.BlockingHandler

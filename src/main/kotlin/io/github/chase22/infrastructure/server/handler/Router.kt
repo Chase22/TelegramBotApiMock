@@ -1,5 +1,6 @@
-package io.github.chase22.infrastructure.server
+package io.github.chase22.infrastructure.server.handler
 
+import io.github.chase22.infrastructure.server.TelegramApiEndpoint
 import io.github.chase22.infrastructure.server.endpoint.EndpointRegistry
 import io.undertow.server.HttpHandler
 import io.undertow.server.HttpServerExchange
@@ -12,17 +13,17 @@ class Router(private val next: HttpHandler, private val endpointRegistry: Endpoi
 
     @Throws(Exception::class)
     override fun handleRequest(exchange: HttpServerExchange) {
-        val (botId, path) = exchange.requestPath.substring(1).split(['/'], 2)
+        val (botId, path) = exchange.requestPath.substring(1).split(delimiters = *charArrayOf('/'), limit = 2)
 
         exchange.putAttachment(BOT_ID_ATTACHMENT_KEY, botId)
 
-        val endpoint = endpointRegistry.getForPath(path)
+        val endpoint = endpointRegistry.getForPath("/$path")
 
         if (nonNull(endpoint)) {
             exchange.putAttachment(ENDPOINT_ATTACHMENT_KEY, endpoint)
             next.handleRequest(exchange)
         } else {
-            LOGGER.warn("No Endpoint for path {}", path)
+            LOGGER.warn("No Endpoint for path {}", "/$path")
             exchange.statusCode = NOT_FOUND
             exchange.endExchange()
         }

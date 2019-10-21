@@ -7,17 +7,14 @@ import io.github.chase22.infrastructure.server.endpoint.EndpointRegistry
 import io.github.chase22.infrastructure.server.handler.HandlerChain
 
 class DependencyRegistry(port: Int, configuration: TelegramBotApiConfiguration) {
-    val objectMapper: ObjectMapper = ObjectMapper()
-    val endpointRegistry: EndpointRegistry = EndpointRegistry()
-    val apiServer: ApiServer
-    val handlerChain: HandlerChain
-
-    init {
-        handlerChain = HandlerChain(endpointRegistry, configuration, objectMapper)
-
-        objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL)
-
-        apiServer = ApiServer(port, handlerChain)
+    val objectMapper: ObjectMapper = ObjectMapper().apply {
+        this.setSerializationInclusion(JsonInclude.Include.NON_NULL)
     }
+
+    val endpointRegistry: EndpointRegistry = EndpointRegistry(objectMapper, configuration.bot)
+
+    val handlerChain: HandlerChain = HandlerChain(endpointRegistry, configuration, objectMapper)
+
+    val apiServer: ApiServer = ApiServer(port, handlerChain)
 
 }
