@@ -75,3 +75,7 @@ jacocoTestReport {
         xml.destination = file("${projectDir}/jacocoTestReport.xml")
     }
 }
+
+test {
+    finalizedBy jacocoTestReport
+}
