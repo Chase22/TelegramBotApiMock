@@ -1,9 +1,9 @@
-package io.github.chase22.infrastructure.server.endpoint
+package io.github.chase22.telegram.telegrambotapimock.infrastructure.registry
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import io.github.chase22.api.endpoints.GetMeEndpoint
-import io.github.chase22.infrastructure.server.TelegramApiEndpoint
-import io.github.chase22.telegram.telegrambotapimock.api.data.User
+import io.github.chase22.telegram.telegrambotapimock.telegram.endpoints.GetMeEndpoint
+import io.github.chase22.telegram.telegrambotapimock.telegram.endpoints.TelegramApiEndpoint
+import io.github.chase22.telegram.telegrambotapimock.telegram.data.User
 import org.slf4j.LoggerFactory
 
 import java.util.HashMap

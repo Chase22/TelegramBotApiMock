@@ -1,8 +1,7 @@
-package io.github.chase22.api.endpoints
+package io.github.chase22.telegram.telegrambotapimock.telegram.endpoints
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import io.github.chase22.infrastructure.server.TelegramApiEndpoint
-import io.github.chase22.telegram.telegrambotapimock.api.data.User
+import io.github.chase22.telegram.telegrambotapimock.telegram.data.User
 import io.undertow.server.HttpServerExchange
 import java.io.IOException
 import java.nio.ByteBuffer

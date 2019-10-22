@@ -1,7 +1,6 @@
-package io.github.chase22.telegram.telegrambotapimock.api.data
+package io.github.chase22.telegram.telegrambotapimock.telegram.data
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import java.util.*
 
 class User(
         @field:JsonProperty("id") val id: Long,

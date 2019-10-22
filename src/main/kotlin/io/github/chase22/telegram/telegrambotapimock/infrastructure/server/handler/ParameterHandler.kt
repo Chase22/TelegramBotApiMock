@@ -1,7 +1,7 @@
-package io.github.chase22.infrastructure.server.handler
+package io.github.chase22.telegram.telegrambotapimock.infrastructure.server.handler
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import io.github.chase22.infrastructure.server.handler.Router.Companion.ENDPOINT_ATTACHMENT_KEY
+import io.github.chase22.telegram.telegrambotapimock.infrastructure.server.handler.Router.Companion.ENDPOINT_ATTACHMENT_KEY
 import io.undertow.server.HttpHandler
 import io.undertow.server.HttpServerExchange
 

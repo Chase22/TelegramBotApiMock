@@ -2,7 +2,7 @@ package io.github.chase22.test
 
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import io.github.chase22.TelegramBotApiMock
+import io.github.chase22.telegram.telegrambotapimock.api.TelegramBotApiMock
 import io.github.chase22.util.ApiMockBuilder
 import io.undertow.util.StatusCodes
 import spock.lang.Specification

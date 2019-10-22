@@ -1,4 +1,4 @@
-package io.github.chase22.infrastructure.server.handler
+package io.github.chase22.telegram.telegrambotapimock.infrastructure.server.handler
 
 import io.undertow.server.HttpHandler
 import io.undertow.server.HttpServerExchange

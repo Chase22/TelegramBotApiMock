@@ -1,7 +1,7 @@
-package io.github.chase22.infrastructure.server.handler
+package io.github.chase22.telegram.telegrambotapimock.infrastructure.server.handler
 
-import io.github.chase22.infrastructure.server.TelegramApiEndpoint
-import io.github.chase22.infrastructure.server.endpoint.EndpointRegistry
+import io.github.chase22.telegram.telegrambotapimock.telegram.endpoints.TelegramApiEndpoint
+import io.github.chase22.telegram.telegrambotapimock.infrastructure.registry.EndpointRegistry
 import io.undertow.server.HttpHandler
 import io.undertow.server.HttpServerExchange
 import io.undertow.util.AttachmentKey

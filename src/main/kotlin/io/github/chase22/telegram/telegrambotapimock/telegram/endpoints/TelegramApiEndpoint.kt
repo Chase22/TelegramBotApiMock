@@ -1,4 +1,4 @@
-package io.github.chase22.infrastructure.server
+package io.github.chase22.telegram.telegrambotapimock.telegram.endpoints
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.undertow.server.HttpHandler

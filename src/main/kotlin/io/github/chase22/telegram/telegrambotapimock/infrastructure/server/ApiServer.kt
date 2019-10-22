@@ -1,6 +1,6 @@
-package io.github.chase22.infrastructure.server
+package io.github.chase22.telegram.telegrambotapimock.infrastructure.server
 
-import io.github.chase22.infrastructure.server.handler.HandlerChain
+import io.github.chase22.telegram.telegrambotapimock.infrastructure.server.handler.HandlerChain
 import io.undertow.Undertow
 
 class ApiServer internal constructor(port: Int, handlerChain: HandlerChain) {
