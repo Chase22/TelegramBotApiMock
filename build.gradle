@@ -72,6 +72,6 @@ jacocoTestReport {
     reports {
         html.enabled true
         xml.enabled true
-        csv.enabled true
+        xml.destination = file("${projectDir}/jacocoTestReport.xml")
     }
 }
