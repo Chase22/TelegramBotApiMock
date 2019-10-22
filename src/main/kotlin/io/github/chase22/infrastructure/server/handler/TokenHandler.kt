@@ -10,7 +10,7 @@ import io.undertow.util.PathTemplateMatch.ATTACHMENT_KEY as PATH_TEMPLATE_ATTACH
 class TokenHandler(private val token: String, private val next: HttpHandler) : HttpHandler {
 
     override fun handleRequest(exchange: HttpServerExchange) {
-        val id = exchange.getAttachment(PATH_TEMPLATE_ATTACHMENT_KEY).parameters["id"]
+        val id: String? = exchange.getAttachment(PATH_TEMPLATE_ATTACHMENT_KEY)?.parameters?.get("id")
 
         if (id == null) {
             LOGGER.warn("Passed token was null")
