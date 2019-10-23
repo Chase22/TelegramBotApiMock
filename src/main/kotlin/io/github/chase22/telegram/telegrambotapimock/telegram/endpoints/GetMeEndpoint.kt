@@ -1,8 +1,8 @@
 package io.github.chase22.telegram.telegrambotapimock.telegram.endpoints
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import io.github.chase22.telegram.telegrambotapimock.infrastructure.server.HttpExchangeWrapper
 import io.github.chase22.telegram.telegrambotapimock.telegram.data.User
-import io.undertow.server.HttpServerExchange
 import java.io.IOException
 import java.nio.ByteBuffer
 
@@ -12,9 +12,9 @@ class GetMeEndpoint(private val bot: User, private val objectMapper: ObjectMappe
     override val path: String
         get() = "/getMe"
 
-    override fun process(exchange: HttpServerExchange) {
+    override fun process(exchange: HttpExchangeWrapper) {
         try {
-            exchange.responseSender.send(ByteBuffer.wrap(objectMapper.writeValueAsBytes(bot)))
+            exchange.send(objectMapper.writeValueAsBytes(bot))
         } catch (e: IOException) {
             e.printStackTrace()
         }

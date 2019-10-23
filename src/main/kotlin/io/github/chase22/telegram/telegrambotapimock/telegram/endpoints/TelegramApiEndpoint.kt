@@ -1,6 +1,7 @@
 package io.github.chase22.telegram.telegrambotapimock.telegram.endpoints
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import io.github.chase22.telegram.telegrambotapimock.infrastructure.server.HttpExchangeWrapper
 import io.undertow.server.HttpHandler
 import io.undertow.server.HttpServerExchange
 import io.undertow.util.AttachmentKey
@@ -17,7 +18,7 @@ abstract class TelegramApiEndpoint<T> : HttpHandler {
     val attachmentKey: AttachmentKey<T>
         get() = AttachmentKey.create(bodyType)
 
-    protected abstract fun process(exchange: HttpServerExchange)
+    protected abstract fun process(exchange: HttpExchangeWrapper)
 
     override fun handleRequest(exchange: HttpServerExchange) {
         val contentTypeHeader = exchange.requestHeaders.getFirst(Headers.CONTENT_TYPE)
@@ -27,7 +28,7 @@ abstract class TelegramApiEndpoint<T> : HttpHandler {
             return
         }
 
-        process(exchange)
+        process(HttpExchangeWrapper(exchange))
     }
 
     fun setParamAttachment(exchange: HttpServerExchange, objectMapper: ObjectMapper) {
