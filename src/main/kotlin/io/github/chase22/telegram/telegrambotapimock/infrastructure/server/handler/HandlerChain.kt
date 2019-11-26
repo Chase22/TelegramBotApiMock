@@ -19,7 +19,7 @@ class HandlerChain(endpointRegistry: EndpointRegistry,
         val router = Router(parameterHandler, endpointRegistry)
         val blockingHandler = BlockingHandler(router)
 
-        val tokenHandler = TokenHandler(config.botToken, blockingHandler)
+        val tokenHandler = TokenHandler(config.botToken, blockingHandler, objectMapper)
 
         val pathTemplateHandler = PathTemplateHandler()
         pathTemplateHandler.add("/{id}/*", tokenHandler)

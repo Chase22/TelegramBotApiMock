@@ -1,5 +1,6 @@
 package io.github.chase22.telegram.telegrambotapimock.infrastructure.server.handler
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import io.undertow.server.HttpHandler
 import io.undertow.server.HttpServerExchange
 import io.undertow.server.ServerConnection
@@ -16,7 +17,7 @@ class TokenHandlerSpec extends Specification {
     HttpServerExchange exchange = new HttpServerExchange(serverConnectionMock)
 
     @Subject
-    TokenHandler tokenHandler = new TokenHandler("someToken", handlerMock)
+    TokenHandler tokenHandler = new TokenHandler("someToken", handlerMock, new ObjectMapper())
 
     def "handleRequest() should set statusCode 404 if no id was supplied"() {
 
