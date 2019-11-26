@@ -17,7 +17,7 @@ class TokenHandlerSpec extends Specification {
     HttpServerExchange exchange = new HttpServerExchange(serverConnectionMock)
 
     @Subject
-    TokenHandler tokenHandler = new TokenHandler("someToken", handlerMock, new ObjectMapper())
+    TokenHandler tokenHandler = new TokenHandler("someToken", handlerMock)
 
     def "handleRequest() should set statusCode 404 if no id was supplied"() {
 

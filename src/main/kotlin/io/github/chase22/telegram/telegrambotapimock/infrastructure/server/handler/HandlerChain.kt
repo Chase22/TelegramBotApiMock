@@ -16,14 +16,16 @@ class HandlerChain(endpointRegistry: EndpointRegistry,
     init {
         val parameterHandler = ParameterHandler(objectMapper)
 
-        val router = Router(parameterHandler, endpointRegistry)
+        val router = Router(parameterHandler, endpointRegistry, objectMapper)
         val blockingHandler = BlockingHandler(router)
 
-        val tokenHandler = TokenHandler(config.botToken, blockingHandler, objectMapper)
+        val tokenHandler = TokenHandler(config.botToken, blockingHandler)
 
         val pathTemplateHandler = PathTemplateHandler()
         pathTemplateHandler.add("/{id}/*", tokenHandler)
 
-        handler = pathTemplateHandler
+        val telegramErrorResponseHandler = TelegramErrorResponseHandler(pathTemplateHandler, objectMapper)
+
+        handler = telegramErrorResponseHandler
     }
 }

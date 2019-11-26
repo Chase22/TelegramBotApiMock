@@ -54,7 +54,10 @@ dependencies {
     integrationTestImplementation 'org.spockframework:spock-core:1.3-groovy-2.5'
     integrationTestImplementation 'junit:junit:4.12'
 
-    integrationTestImplementation group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: '2.12.1'
+    integrationTestImplementation 'org.telegram:telegrambots:4.4.0.1'
+
+    integrationTestImplementation 'org.apache.logging.log4j:log4j-slf4j-impl:2.12.1'
+    integrationTestImplementation 'org.gebish:geb-waiting:2.2'
 }
 
 task integrationTest(type: Test) {

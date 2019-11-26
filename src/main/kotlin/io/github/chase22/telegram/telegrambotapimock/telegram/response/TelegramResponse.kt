@@ -5,19 +5,19 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import io.undertow.server.HttpServerExchange
 import io.undertow.util.StatusCodes
 
-data class TelegramResponse(
-        @JsonProperty("ok") private val ok: Boolean,
-        @JsonProperty("description") private val description: String? = null,
-        @JsonProperty("result") private val result: Any? = null,
-        @JsonProperty("error_code") private val errorCode: Int? = null,
-        @JsonProperty("parameters") private val parameters: ResponseParameters? = null
+data class TelegramResponse<Body>(
+        @JsonProperty("ok") val ok: Boolean,
+        @JsonProperty("description") val description: String? = null,
+        @JsonProperty("result") val result: Body? = null,
+        @JsonProperty("error_code") val errorCode: Int? = null,
+        @JsonProperty("parameters") val parameters: ResponseParameters? = null
 ) {
     fun sendToExchange(exchange: HttpServerExchange, objectMapper: ObjectMapper) = exchange
             .responseSender
             .send(objectMapper.writeValueAsString(this))
 
     companion object {
-        fun errorResponse(description: String, errorCode: Int) = TelegramResponse(
+        fun errorResponse(description: String, errorCode: Int) = TelegramResponse<Unit>(
                 ok = false,
                 description = description,
                 errorCode = errorCode
@@ -25,7 +25,11 @@ data class TelegramResponse(
 
         fun errorResponse(statusCode: Int) = errorResponse(StatusCodes.getReason(statusCode), statusCode)
 
-        fun response(body: Any) = TelegramResponse(ok = true, result = body)
+        fun <Body> response(body: Body) = TelegramResponse<Body>(ok = true, result = body)
+
+        fun <Body> response(body: Body, description: String) =
+                TelegramResponse<Body>(ok = true, description = description, result = body)
+
     }
 }
 

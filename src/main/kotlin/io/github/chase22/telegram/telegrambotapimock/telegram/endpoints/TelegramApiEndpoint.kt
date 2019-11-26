@@ -1,7 +1,6 @@
 package io.github.chase22.telegram.telegrambotapimock.telegram.endpoints
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import io.github.chase22.telegram.telegrambotapimock.infrastructure.server.HttpExchangeWrapper
 import io.undertow.server.HttpHandler
 import io.undertow.server.HttpServerExchange
 import io.undertow.util.AttachmentKey
@@ -10,15 +9,15 @@ import io.undertow.util.Headers
 import io.undertow.util.StatusCodes.BAD_REQUEST
 import java.util.Objects.isNull
 
-abstract class TelegramApiEndpoint<T> : HttpHandler {
+abstract class TelegramApiEndpoint<Parameter> : HttpHandler {
 
-    abstract val bodyType: Class<T>?
+    abstract val parameterType: Class<Parameter>?
     abstract val path: String
 
-    val attachmentKey: AttachmentKey<T>
-        get() = AttachmentKey.create(bodyType)
+    private val attachmentKey: AttachmentKey<Parameter>
+        get() = AttachmentKey.create(parameterType)
 
-    protected abstract fun process(exchange: HttpExchangeWrapper)
+    protected abstract fun process(exchange: HttpServerExchange)
 
     override fun handleRequest(exchange: HttpServerExchange) {
         val contentTypeHeader = exchange.requestHeaders.getFirst(Headers.CONTENT_TYPE)
@@ -28,18 +27,18 @@ abstract class TelegramApiEndpoint<T> : HttpHandler {
             return
         }
 
-        process(HttpExchangeWrapper(exchange))
+        process(exchange)
     }
 
     fun setParamAttachment(exchange: HttpServerExchange, objectMapper: ObjectMapper) {
-        bodyType?.let {
-            objectMapper.readValue<T>(exchange.inputStream, bodyType).let {
-                exchange.putAttachment<T>(attachmentKey, it)
+        parameterType?.let {
+            objectMapper.readValue<Parameter>(exchange.inputStream, parameterType).let {
+                exchange.putAttachment<Parameter>(attachmentKey, it)
             }
         }
     }
 
-    fun getParamAttachment(exchange: HttpServerExchange): T {
+    fun getParamAttachment(exchange: HttpServerExchange): Parameter {
         return exchange.getAttachment(attachmentKey)
     }
 }

@@ -34,7 +34,7 @@ class GetMeApiSpec extends Specification {
         def request = HttpRequest.newBuilder()
                 .method("GET", noBody())
                 .header(CONTENT_TYPE_STRING, "application/json")
-                .uri(URI.create("http://localhost:${ApiMockBuilder.port}/token/getMe"))
+                .uri(URI.create("http://localhost:${ApiMockBuilder.PORT}/token/getMe"))
                 .build()
 
         when:
