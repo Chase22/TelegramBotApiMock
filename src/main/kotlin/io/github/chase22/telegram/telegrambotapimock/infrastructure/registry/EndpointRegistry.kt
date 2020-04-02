@@ -1,21 +1,25 @@
 package io.github.chase22.telegram.telegrambotapimock.infrastructure.registry
 
 import com.fasterxml.jackson.databind.ObjectMapper
+import io.github.chase22.telegram.telegrambotapimock.telegram.data.Update
 import io.github.chase22.telegram.telegrambotapimock.telegram.endpoints.GetMe
 import io.github.chase22.telegram.telegrambotapimock.telegram.endpoints.TelegramApiEndpoint
 import io.github.chase22.telegram.telegrambotapimock.telegram.data.User
 import io.github.chase22.telegram.telegrambotapimock.telegram.endpoints.DeleteWebhook
+import io.github.chase22.telegram.telegrambotapimock.telegram.endpoints.GetUpdates
+import kotlinx.coroutines.channels.Channel
 import org.slf4j.LoggerFactory
 
 import java.util.HashMap
 
-class EndpointRegistry(objectMapper: ObjectMapper, bot: User) {
+class EndpointRegistry(objectMapper: ObjectMapper, bot: User, updateChannel: Channel<Update>) {
 
     private val endpointMap = HashMap<String, TelegramApiEndpoint<*>>()
 
     init {
         addEndpoint(GetMe(bot, objectMapper))
         addEndpoint(DeleteWebhook(objectMapper))
+        addEndpoint(GetUpdates(updateChannel))
     }
 
     fun getForPath(path: String): TelegramApiEndpoint<*>? = endpointMap[path]

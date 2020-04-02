@@ -32,8 +32,12 @@ abstract class TelegramApiEndpoint<Parameter> : HttpHandler {
 
     fun setParamAttachment(exchange: HttpServerExchange, objectMapper: ObjectMapper) {
         parameterType?.let {
-            objectMapper.readValue<Parameter>(exchange.inputStream, parameterType).let {
-                exchange.putAttachment<Parameter>(attachmentKey, it)
+            try {
+                objectMapper.readValue<Parameter>(exchange.inputStream, parameterType).let {
+                    exchange.putAttachment<Parameter>(attachmentKey, it)
+                }
+            } catch (e: Exception) {
+                e.printStackTrace()
             }
         }
     }
