@@ -1,6 +1,8 @@
 package io.github.chase22.telegram.telegrambotapimock.telegram.data
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import io.github.chase22.telegram.telegrambotapimock.telegram.data.shipping.PreCheckoutQuery
+import io.github.chase22.telegram.telegrambotapimock.telegram.data.shipping.ShippingQuery
 
 data class Update(
         @field:JsonProperty("update_id") val updateId: Int,

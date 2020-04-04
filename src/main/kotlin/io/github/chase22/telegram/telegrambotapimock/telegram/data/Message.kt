@@ -2,6 +2,7 @@ package io.github.chase22.telegram.telegrambotapimock.telegram.data
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import io.github.chase22.telegram.telegrambotapimock.telegram.data.chat.Chat
+import io.github.chase22.telegram.telegrambotapimock.telegram.data.passport.PassportData
 import io.github.chase22.telegram.telegrambotapimock.telegram.data.shipping.SuccessfulPayment
 import java.time.LocalDateTime
 
