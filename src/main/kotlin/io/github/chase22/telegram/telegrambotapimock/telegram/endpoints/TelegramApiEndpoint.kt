@@ -14,8 +14,7 @@ abstract class TelegramApiEndpoint<Parameter> : HttpHandler {
     abstract val parameterType: Class<Parameter>?
     abstract val path: String
 
-    private val attachmentKey: AttachmentKey<Parameter>
-        get() = AttachmentKey.create(parameterType)
+    private val attachmentKey: AttachmentKey<Parameter> = AttachmentKey.create(parameterType)
 
     protected abstract fun process(exchange: HttpServerExchange)
 
@@ -30,11 +29,11 @@ abstract class TelegramApiEndpoint<Parameter> : HttpHandler {
         process(exchange)
     }
 
-    fun setParamAttachment(exchange: HttpServerExchange, objectMapper: ObjectMapper) {
+    fun setParamAttachment(exchange: HttpServerExchange, body: String, objectMapper: ObjectMapper) {
         parameterType?.let {
             try {
-                objectMapper.readValue<Parameter>(exchange.inputStream, parameterType).let {
-                    exchange.putAttachment<Parameter>(attachmentKey, it)
+                objectMapper.readValue(body, parameterType).let {
+                    exchange.putAttachment(attachmentKey, it)
                 }
             } catch (e: Exception) {
                 e.printStackTrace()

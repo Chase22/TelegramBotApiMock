@@ -8,9 +8,16 @@ import io.undertow.server.HttpServerExchange
 class ParameterHandler(private val objectMapper: ObjectMapper) : HttpHandler {
 
     override fun handleRequest(exchange: HttpServerExchange) {
-        val endpoint = exchange.getAttachment(ENDPOINT_ATTACHMENT_KEY)
+        if (exchange.isInIoThread) {
+            exchange.dispatch(this);
+            return;
+        }
+        exchange.requestReceiver.receiveFullString { exchange: HttpServerExchange, message: String ->
+            val endpoint = exchange.getAttachment(ENDPOINT_ATTACHMENT_KEY)
 
-        endpoint.setParamAttachment(exchange, objectMapper)
-        endpoint.handleRequest(exchange)
+            endpoint.setParamAttachment(exchange, message, objectMapper)
+            endpoint.handleRequest(exchange)
+        }
+
     }
 }

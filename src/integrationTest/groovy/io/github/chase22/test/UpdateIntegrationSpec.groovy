@@ -9,15 +9,18 @@ import io.github.chase22.util.TestBot
 import org.telegram.telegrambots.ApiContextInitializer
 import org.telegram.telegrambots.meta.TelegramBotsApi
 import org.telegram.telegrambots.meta.api.objects.Update
-import spock.lang.PendingFeature
 import spock.lang.Specification
 
 class UpdateIntegrationSpec extends Specification {
     TelegramBotApiMock apiMock
+    TelegramBotsApi api
 
     void setup() {
         apiMock = ApiMockBuilder.default
         apiMock.start()
+
+        ApiContextInitializer.init()
+        api = new TelegramBotsApi()
     }
 
     void cleanup() {
@@ -29,9 +32,8 @@ class UpdateIntegrationSpec extends Specification {
         TestBot testBot = TestBot.create(ApiMockBuilder.PORT)
 
         when:
-        ApiContextInitializer.init()
-        TelegramBotsApi api = new TelegramBotsApi()
-        api.registerBot(testBot)
+        testBot.register(api)
+        testBot.stop()
 
         then:
         noExceptionThrown()
@@ -44,17 +46,16 @@ class UpdateIntegrationSpec extends Specification {
         Chat someChat = new Chat(100, ChatType.PRIVATE, null, null, null, null, null, null, null, null, null, null, null)
 
         TestBot testBot = TestBot.create(ApiMockBuilder.PORT)
+        testBot.register(api)
 
         when:
-        ApiContextInitializer.init()
-        TelegramBotsApi api = new TelegramBotsApi()
-        api.registerBot(testBot)
-
         apiMock.getChatSender(someChat).sendMessage(someUser, messageText)
-
 
         then:
         Update update = testBot.waitForNextUpdate()
         update.message.text == messageText
+
+        cleanup:
+        testBot.stop()
     }
 }

@@ -1,15 +1,13 @@
 package io.github.chase22.telegram.telegrambotapimock.infrastructure.server.handler
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import io.github.chase22.telegram.telegrambotapimock.telegram.endpoints.TelegramApiEndpoint
 import io.github.chase22.telegram.telegrambotapimock.infrastructure.registry.EndpointRegistry
-import io.github.chase22.telegram.telegrambotapimock.telegram.response.TelegramResponse
+import io.github.chase22.telegram.telegrambotapimock.telegram.endpoints.TelegramApiEndpoint
 import io.undertow.server.HttpHandler
 import io.undertow.server.HttpServerExchange
 import io.undertow.util.AttachmentKey
 import io.undertow.util.StatusCodes.NOT_FOUND
 import org.slf4j.LoggerFactory
-import java.util.Objects.nonNull
 
 class Router(private val next: HttpHandler,
              private val endpointRegistry: EndpointRegistry,
@@ -21,9 +19,11 @@ class Router(private val next: HttpHandler,
 
         exchange.putAttachment(BOT_ID_ATTACHMENT_KEY, botId)
 
+        LOGGER.debug("Get endpoint for path {}", path)
         val endpoint = endpointRegistry.getForPath("/$path")
 
-        if (nonNull(endpoint)) {
+        if (endpoint != null) {
+            LOGGER.debug("Found endpoint {} for path {}", endpoint::class.java.name, path)
             exchange.putAttachment(ENDPOINT_ATTACHMENT_KEY, endpoint)
             next.handleRequest(exchange)
         } else {

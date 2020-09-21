@@ -1,6 +1,5 @@
 package io.github.chase22.test
 
-
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.github.chase22.telegram.telegrambotapimock.api.TelegramBotApiMock
 import io.github.chase22.util.ApiMockBuilder
@@ -42,7 +41,7 @@ class GetMeApiSpec extends Specification {
 
         then:
         response.statusCode() == StatusCodes.OK
-        Map body = new ObjectMapper().readValue(response.body(), Map)
+        Map body = new ObjectMapper().readValue(response.body(), Map).result
 
         body.id == BOT_USER.id
         body.username == BOT_USER.username

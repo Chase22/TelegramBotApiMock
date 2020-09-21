@@ -7,6 +7,8 @@ class ApiServer internal constructor(port: Int, handlerChain: HandlerChain) {
 
     private val server: Undertow = Undertow
             .builder()
+            .setWorkerThreads(10)
+            .setIoThreads(10)
             .addHttpListener(port, "localhost")
             .setHandler(handlerChain.handler)
             .build()

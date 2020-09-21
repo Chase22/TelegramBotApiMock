@@ -3,6 +3,7 @@ package io.github.chase22.telegram.telegrambotapimock.telegram.response
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.databind.ObjectMapper
 import io.undertow.server.HttpServerExchange
+import io.undertow.util.Headers
 import io.undertow.util.StatusCodes
 
 data class TelegramResponse<Body>(
@@ -12,9 +13,12 @@ data class TelegramResponse<Body>(
         @JsonProperty("error_code") val errorCode: Int? = null,
         @JsonProperty("parameters") val parameters: ResponseParameters? = null
 ) {
-    fun sendToExchange(exchange: HttpServerExchange, objectMapper: ObjectMapper) = exchange
-            .responseSender
-            .send(objectMapper.writeValueAsString(this))
+    fun sendToExchange(exchange: HttpServerExchange, objectMapper: ObjectMapper) {
+        exchange.responseHeaders.add(Headers.CONTENT_TYPE, "application/json")
+        return exchange
+                .responseSender
+                .send(objectMapper.writeValueAsString(this))
+    }
 
     companion object {
         fun errorResponse(description: String, errorCode: Int) = TelegramResponse<Unit>(
@@ -25,10 +29,10 @@ data class TelegramResponse<Body>(
 
         fun errorResponse(statusCode: Int) = errorResponse(StatusCodes.getReason(statusCode), statusCode)
 
-        fun <Body> response(body: Body) = TelegramResponse<Body>(ok = true, result = body)
+        fun <Body> response(body: Body) = TelegramResponse(ok = true, result = body)
 
         fun <Body> response(body: Body, description: String) =
-                TelegramResponse<Body>(ok = true, description = description, result = body)
+                TelegramResponse(ok = true, description = description, result = body)
 
     }
 }

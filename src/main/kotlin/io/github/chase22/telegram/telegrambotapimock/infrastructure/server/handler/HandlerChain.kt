@@ -4,8 +4,9 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import io.github.chase22.telegram.telegrambotapimock.api.config.TelegramBotApiConfiguration
 import io.github.chase22.telegram.telegrambotapimock.infrastructure.registry.EndpointRegistry
 import io.undertow.server.HttpHandler
-import io.undertow.server.handlers.BlockingHandler
+import io.undertow.server.handlers.GracefulShutdownHandler
 import io.undertow.server.handlers.PathTemplateHandler
+import io.undertow.server.handlers.RequestDumpingHandler
 
 class HandlerChain(endpointRegistry: EndpointRegistry,
                    config: TelegramBotApiConfiguration,
@@ -16,16 +17,19 @@ class HandlerChain(endpointRegistry: EndpointRegistry,
     init {
         val parameterHandler = ParameterHandler(objectMapper)
 
-        val router = Router(parameterHandler, endpointRegistry, objectMapper)
-        val blockingHandler = BlockingHandler(router)
+        val shutdownHandler = GracefulShutdownHandler(parameterHandler)
 
-        val tokenHandler = TokenHandler(config.botToken, blockingHandler)
+        val router = Router(shutdownHandler, endpointRegistry, objectMapper)
+
+        val tokenHandler = TokenHandler(config.botToken, router)
 
         val pathTemplateHandler = PathTemplateHandler()
         pathTemplateHandler.add("/{id}/*", tokenHandler)
 
         val telegramErrorResponseHandler = TelegramErrorResponseHandler(pathTemplateHandler, objectMapper)
 
-        handler = telegramErrorResponseHandler
+        val requestDumpingHandler = RequestDumpingHandler(telegramErrorResponseHandler)
+
+        handler = requestDumpingHandler
     }
 }

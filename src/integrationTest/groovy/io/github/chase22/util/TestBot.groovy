@@ -1,10 +1,12 @@
 package io.github.chase22.util
 
-import geb.waiting.Wait
+
 import io.github.chase22.data.UserFixture
 import org.telegram.telegrambots.bots.DefaultBotOptions
 import org.telegram.telegrambots.bots.TelegramLongPollingBot
+import org.telegram.telegrambots.meta.TelegramBotsApi
 import org.telegram.telegrambots.meta.api.objects.Update
+import org.telegram.telegrambots.meta.generics.BotSession
 
 import java.util.concurrent.BlockingQueue
 import java.util.concurrent.LinkedBlockingQueue
@@ -19,6 +21,7 @@ class TestBot extends TelegramLongPollingBot {
     }
 
     private BlockingQueue<Update> messageQueue = new LinkedBlockingQueue<>()
+    private BotSession session
 
     TestBot(final DefaultBotOptions options) {
         super(options)
@@ -41,5 +44,13 @@ class TestBot extends TelegramLongPollingBot {
 
     Update waitForNextUpdate(long timeoutSeconds = 5) {
         return messageQueue.poll(timeoutSeconds, TimeUnit.SECONDS)
+    }
+
+    void register(TelegramBotsApi api) {
+        session = api.registerBot(this)
+    }
+
+    void stop() {
+        session.stop()
     }
 }
