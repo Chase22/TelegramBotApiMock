@@ -11,7 +11,8 @@ class ApiMockBuilder {
     static TelegramBotApiMock getDefault() {
         def configuration = new TelegramBotApiConfiguration(
                 UserFixture.BOT_USER,
-                TOKEN
+                TOKEN,
+                true
         )
 
         return new TelegramBotApiMock(configuration, PORT)

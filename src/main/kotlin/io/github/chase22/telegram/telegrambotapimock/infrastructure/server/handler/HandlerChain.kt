@@ -28,8 +28,12 @@ class HandlerChain(endpointRegistry: EndpointRegistry,
 
         val telegramErrorResponseHandler = TelegramErrorResponseHandler(pathTemplateHandler, objectMapper)
 
-        val requestDumpingHandler = RequestDumpingHandler(telegramErrorResponseHandler)
+        handler = if (config.dumpRequests) {
+            val requestDumpingHandler = RequestDumpingHandler(telegramErrorResponseHandler)
+            requestDumpingHandler
+        } else {
+            telegramErrorResponseHandler
+        }
 
-        handler = requestDumpingHandler
     }
 }

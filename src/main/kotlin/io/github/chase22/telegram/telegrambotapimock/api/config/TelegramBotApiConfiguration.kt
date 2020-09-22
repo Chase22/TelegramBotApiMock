@@ -4,5 +4,6 @@ import io.github.chase22.telegram.telegrambotapimock.telegram.data.User
 
 data class TelegramBotApiConfiguration(
         val bot: User,
-        val botToken: String
+        val botToken: String,
+        val dumpRequests: Boolean = false
 )
