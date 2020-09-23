@@ -22,6 +22,10 @@ sourceSets {
         compileClasspath += sourceSets.main.output
         runtimeClasspath += sourceSets.main.output
     }
+    docParser {
+        compileClasspath += sourceSets.main.output
+        runtimeClasspath += sourceSets.main.output
+    }
 }
 
 idea {
@@ -35,6 +39,7 @@ idea {
 configurations {
     integrationTestImplementation.extendsFrom implementation
     integrationTestRuntimeOnly.extendsFrom runtimeOnly
+    docParserImplementation.extendsFrom impmenentation
 }
 
 dependencies {
@@ -64,6 +69,9 @@ dependencies {
 
     integrationTestImplementation 'org.apache.logging.log4j:log4j-slf4j-impl:2.12.1'
     integrationTestImplementation 'org.gebish:geb-waiting:2.2'
+
+    docParserImplementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
+    docParserImplementation "org.jsoup:jsoup:1.13.1"
 }
 
 task integrationTest(type: Test) {
@@ -85,5 +93,5 @@ jacocoTestReport {
 }
 
 test {
-    finalizedBy jacocoTestReport
+//    finalizedBy jacocoTestReport
 }
